@@ -156,11 +156,38 @@ To test the webhook endpoint, you'll need to:
 2. Include the signature in the `x-signature` header
 3. Send a POST request to the endpoint
 
-Example test request:
+### Generating a Valid Signature
+
+Here's how to generate a valid signature using TypeScript:
+
+```typescript
+import { createHmac } from 'crypto';
+
+// Use the same secret as in your .env file
+const webhookSecret: string = 'your_webhook_secret_here';
+
+// The payload you want to send
+const payload: string = JSON.stringify({ eventType: "request" });
+
+// Generate the signature
+const hmac = createHmac('sha256', webhookSecret);
+hmac.update(payload);
+const signature: string = hmac.digest('base64');
+
+console.log('Generated signature:', signature);
+```
+
+You can also use this one-liner in your terminal:
+
+```bash
+echo -n '{"eventType":"request"}' | openssl dgst -sha256 -hmac "your_webhook_secret_here" -binary | base64
+```
+
+Example test request with a properly generated signature:
 
 ```bash
 curl -X POST http://localhost:4000 \
   -H "Content-Type: application/json" \
-  -H "x-signature: your_generated_signature" \
+  -H "x-signature: YOUR_GENERATED_SIGNATURE" \
   -d '{"eventType": "request"}'
 ```
