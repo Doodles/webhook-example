@@ -158,21 +158,21 @@ To test the webhook endpoint, you'll need to:
 
 ### Generating a Valid Signature
 
-Here's how to generate a valid signature using Node.js:
+Here's how to generate a valid signature using TypeScript:
 
-```javascript
-const crypto = require('crypto');
+```typescript
+import { createHmac } from 'crypto';
 
 // Use the same secret as in your .env file
-const webhookSecret = 'your_webhook_secret_here';
+const webhookSecret: string = 'your_webhook_secret_here';
 
 // The payload you want to send
-const payload = JSON.stringify({ eventType: "request" });
+const payload: string = JSON.stringify({ eventType: "request" });
 
 // Generate the signature
-const hmac = crypto.createHmac('sha256', webhookSecret);
+const hmac = createHmac('sha256', webhookSecret);
 hmac.update(payload);
-const signature = hmac.digest('base64');
+const signature: string = hmac.digest('base64');
 
 console.log('Generated signature:', signature);
 ```
