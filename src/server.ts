@@ -30,7 +30,7 @@ app.post("/", (req: Request, res: Response) => {
     text:
       data.eventType == "request"
         ? "Hello, how are you?"
-        : "I am doing well, thank you for asking.", // This is a example response
+        : "I am doing well, thank you for asking.", // This is an example response
   });
 });
 
