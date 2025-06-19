@@ -121,6 +121,30 @@ The server responds with a JSON object that includes:
 - A dynamic text response based on the event type:
   - For `request` events: "Hello, how are you?"
   - For other events: "I am doing well, thank you for asking."
+- A `saveModified` flag that controls chat history storage for intercepted messages:
+  - For `request` events: `false` (default)
+  - For `response` events: `true` (default)
+  - This behavior can be overridden by explicitly setting the flag in the request
+
+Example Response:
+
+```json
+{
+  "eventType": "request",
+  "text": "Hello, how are you?",
+  "saveModified": false
+  // ... other request data
+}
+```
+
+You can override the default `saveModified` behavior by including it in your request:
+
+```bash
+curl -X POST http://localhost:4000 \
+  -H "Content-Type: application/json" \
+  -H "x-signature: YOUR_GENERATED_SIGNATURE" \
+  -d '{"eventType": "request", "saveModified": true}'
+```
 
 ## Error Responses
 
@@ -161,20 +185,20 @@ To test the webhook endpoint, you'll need to:
 Here's how to generate a valid signature using TypeScript:
 
 ```typescript
-import { createHmac } from 'crypto';
+import { createHmac } from "crypto";
 
 // Use the same secret as in your .env file
-const webhookSecret: string = 'your_webhook_secret_here';
+const webhookSecret: string = "your_webhook_secret_here";
 
 // The payload you want to send
 const payload: string = JSON.stringify({ eventType: "request" });
 
 // Generate the signature
-const hmac = createHmac('sha256', webhookSecret);
+const hmac = createHmac("sha256", webhookSecret);
 hmac.update(payload);
-const signature: string = hmac.digest('base64');
+const signature: string = hmac.digest("base64");
 
-console.log('Generated signature:', signature);
+console.log("Generated signature:", signature);
 ```
 
 You can also use this one-liner in your terminal:
