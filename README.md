@@ -133,7 +133,7 @@ Example Response:
   "eventType": "request",
   "text": "Hello, how are you?",
   "saveModified": false
-  // ... other request data
+  // ... other data
 }
 ```
 
