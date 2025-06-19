@@ -215,3 +215,45 @@ curl -X POST http://localhost:4000 \
   -H "x-signature: YOUR_GENERATED_SIGNATURE" \
   -d '{"eventType": "request"}'
 ```
+
+## Using ngrok for HTTPS Endpoint
+
+To expose your local server to the internet with HTTPS, you can use ngrok. This is particularly useful for testing webhooks that require HTTPS endpoints.
+
+### Installing ngrok
+
+1. Visit [ngrok downloads page](https://ngrok.com/downloads) to download and install ngrok for your platform
+2. Sign up for a free ngrok account to get your authtoken
+3. Configure ngrok with your authtoken:
+
+```bash
+ngrok config add-authtoken <your-authtoken>
+```
+
+### Exposing Your Local Server
+
+To create an HTTPS tunnel to your local server:
+
+```bash
+ngrok http 4000
+```
+
+This will create a secure tunnel to your local server running on port 4000 and provide you with:
+
+- A public HTTPS URL (e.g., https://your-tunnel.ngrok.io)
+- A web interface at http://localhost:4040 for inspecting webhook requests
+
+The HTTPS URL can be used as your webhook endpoint for testing with external services that require HTTPS.
+
+### Example Using the ngrok URL
+
+Update your webhook test command using the ngrok URL:
+
+```bash
+curl -X POST https://your-tunnel.ngrok.io \
+  -H "Content-Type: application/json" \
+  -H "x-signature: YOUR_GENERATED_SIGNATURE" \
+  -d '{"eventType": "request"}'
+```
+
+Note: The ngrok URL changes each time you restart ngrok unless you have a paid plan with fixed domains.
