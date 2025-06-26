@@ -31,7 +31,7 @@ app.post("/", (req: Request, res: Response) => {
       data.eventType == "request"
         ? "Hello, how are you?"
         : "I am doing well, thank you for asking.", // This is an example response
-    saveModified: data.eventType == "request" ? true : false,
+    saveModified: data.eventType == "request" ? true : false, // Pass `saveModified` as `true` or `false` depending on whether you want to save the modified text to the chat history.
   });
 });
 
